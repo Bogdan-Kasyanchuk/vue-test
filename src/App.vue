@@ -27,16 +27,27 @@
   <div class="line">-------------------- Розділювач --------------------</div>
   <div>
     <h2>Todos</h2>
-    <form>
-      <input v-bind:value="title" type="text" placeholder="title" />
-      <input v-bind:value="desc" type="text" placeholder="desc" />
-      <button @click="createTodo">Add totdo</button>
+    <form @submit.prevent>
+      <input
+        v-bind:value="title"
+        @input="title = $event.target.value"
+        type="text"
+        placeholder="title"
+      />
+      <input
+        v-bind:value="desc"
+        @input="desc = $event.target.value"
+        type="text"
+        placeholder="desc"
+      />
+      <button class="btn" @click="createTodo">Add totdo</button>
     </form>
     <ul class="list-ul">
       <li class="item-li" v-for="item in todos" :key="item.id">
         <h3>{{ item.title }}</h3>
         <p :class="{ done: item.status }">{{ item.desc }}</p>
         <input type="checkbox" v-model="item.status" />
+        <button class="btn" @click="deleteTodo(item.id)">Del</button>
       </li>
     </ul>
   </div>
@@ -49,13 +60,13 @@ export default {
       show: false,
       todos: [
         {
-          id: crypto.randomUUID,
+          id: crypto.randomUUID(),
           title: "Покупка",
           desc: "Купити продукти",
           status: true,
         },
         {
-          id: crypto.randomUUID,
+          id: crypto.randomUUID(),
           title: "Робота",
           desc: "Зробити програму",
           status: false,
@@ -80,7 +91,22 @@ export default {
       this.show = !this.show;
     },
 
-    createTodo() {},
+    createTodo() {
+      const newTodo = {
+        id: crypto.randomUUID(),
+        title: this.title,
+        desc: this.desc,
+        status: false,
+      };
+
+      this.todos.push(newTodo);
+      this.title = "";
+      this.desc = "";
+    },
+
+    deleteTodo(id) {
+      this.todos = this.todos.filter((el) => el.id !== id);
+    },
   },
 
   mounted() {
@@ -88,7 +114,7 @@ export default {
   },
 
   updated() {
-    console.log(this.todos);
+    // console.log(this.todos);
   },
 };
 </script>
@@ -129,9 +155,18 @@ export default {
 
 .item-li {
   border: 1px solid red;
+  padding: 10px;
 }
 
 .item-li:not(:last-child) {
   margin-right: 20px;
+}
+
+.btn {
+  margin-left: 20px;
+}
+
+button {
+  cursor: pointer;
 }
 </style>
