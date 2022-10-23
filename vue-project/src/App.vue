@@ -1,0 +1,137 @@
+<template>
+  <h1>TEST VUE</h1>
+  <div>
+    <h2>Лічильник</h2>
+    <p :class="{ p1: count === 5, p2: count === 10 }">{{ count }}</p>
+    <button @click="add">+1</button>
+    <button @click="remove">-1</button>
+    <p class="p1" v-if="count === 5">Лічильник нарахував 5</p>
+    <p class="p2" v-else-if="count === 10">Лічильник нарахував 10</p>
+    <p v-else>Лічильник нарахував................</p>
+  </div>
+  <div class="line">-------------------- Розділювач --------------------</div>
+  <div>
+    <div>Хедер</div>
+    <button :class="{ btnShow: show, btnNotShow: !show }" @click="setShow">
+      Show
+    </button>
+    <div v-show="show">
+      Боді
+      <ul>
+        <li>Bogdan</li>
+        <li>Fedor</li>
+        <li>Petro</li>
+      </ul>
+    </div>
+  </div>
+  <div class="line">-------------------- Розділювач --------------------</div>
+  <div>
+    <h2>Todos</h2>
+    <form>
+      <input v-bind:value="title" type="text" placeholder="title" />
+      <input v-bind:value="desc" type="text" placeholder="desc" />
+      <button @click="createTodo">Add totdo</button>
+    </form>
+    <ul class="list-ul">
+      <li class="item-li" v-for="item in todos" :key="item.id">
+        <h3>{{ item.title }}</h3>
+        <p :class="{ done: item.status }">{{ item.desc }}</p>
+        <input type="checkbox" v-model="item.status" />
+      </li>
+    </ul>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      count: 0,
+      show: false,
+      todos: [
+        {
+          id: crypto.randomUUID,
+          title: "Покупка",
+          desc: "Купити продукти",
+          status: true,
+        },
+        {
+          id: crypto.randomUUID,
+          title: "Робота",
+          desc: "Зробити програму",
+          status: false,
+        },
+      ],
+      title: "",
+      desc: "",
+    };
+  },
+
+  methods: {
+    add() {
+      this.count += 1;
+    },
+
+    remove() {
+      if (this.count <= 0) return;
+      this.count -= 1;
+    },
+
+    setShow() {
+      this.show = !this.show;
+    },
+
+    createTodo() {},
+  },
+
+  mounted() {
+    console.log(`The initial count is ${this.count}.`);
+  },
+
+  updated() {
+    console.log(this.todos);
+  },
+};
+</script>
+<style>
+.p1 {
+  font-size: 20px;
+  color: red;
+}
+
+.p2 {
+  font-size: 20px;
+  color: blue;
+}
+
+.line {
+  font-size: 20px;
+  font-weight: 900;
+  color: rgb(83, 128, 0);
+}
+
+.btnShow {
+  background-color: green;
+}
+
+.btnNotShow {
+  background-color: red;
+}
+
+.done {
+  color: red;
+  text-decoration: line-through;
+}
+
+.list-ul {
+  display: flex;
+  list-style: none;
+}
+
+.item-li {
+  border: 1px solid red;
+}
+
+.item-li:not(:last-child) {
+  margin-right: 20px;
+}
+</style>
