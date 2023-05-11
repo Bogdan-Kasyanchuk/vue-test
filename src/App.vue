@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <h1>TEST VUE</h1>
   <div>
     <h2>Лічильник</h2>
@@ -168,5 +168,61 @@ export default {
 
 button {
   cursor: pointer;
+}
+</style> -->
+
+<!-- *********************************************** -->
+
+<template>
+  <vue-tel-input
+    v-model="phone"
+    mode="international"
+    :dropdownOptions="{
+      showDialCodeInList: true,
+      showSearchBox: true,
+      showFlags: true,
+    }"
+    :inputOptions="{
+      showDialCode: true,
+      autocomplete: 'off',
+      placeholder: 'Enter a phone number',
+      styleClasses: 'input',
+    }"
+    :validCharactersOnly="true"
+    :styleClasses="'wrapper'"
+  ></vue-tel-input>
+</template>
+
+<script>
+import { ref } from "vue";
+import { VueTelInput } from "vue-tel-input";
+import "../node_modules/vue-tel-input/dist/vue-tel-input.css";
+
+export default {
+  components: {
+    VueTelInput,
+  },
+
+  setup() {
+    const phone = ref(null);
+
+    return {
+      phone,
+    };
+  },
+
+  updated() {
+    console.log(this.phone);
+  },
+};
+</script>
+
+<style>
+.input {
+  font-size: 30px;
+  color: red;
+}
+.wrapper {
+  height: 60px;
 }
 </style>
